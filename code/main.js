@@ -8,14 +8,15 @@ const web3 = new Web3(
     new Web3.providers.IpcProvider('/home/pi/.ethereum/geth.ipc', net),
 );
 
-let latestTx = {};
+const UNISWAP = '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D';
+
+let latestTxs = {};
 let blockHeight;
 
 // web3.eth.getTransactionReceipt('0x2f5e7b565e8280826af0a9f492d53fac1b690848df39b98b22f614143d633a4d').then(console.log)
 
 async function getTxs() {
-    latestTx = {};
-
+    latestTxs = {};
     let block = await web3.eth.getBlock('latest');
     if (blockHeight != block.number) {
         console.log('New block:', block.number);
@@ -32,62 +33,58 @@ async function processTxs(txs) {
             getTxData(thisTx);
         });
     }
-    // viewTxs(latestTx);
+}
+
+function parseTx(tx) {
+    return {
+        'from': tx.from,
+        'to': tx.to,
+        'gas': tx.gasPrice, // 'fees' ?
+        'input': tx.input,
+    };
 }
 
 async function getTxData(tx) {
-    try {
-        let _thisTx = {
-            'from': tx.from,
-            'to': tx.to,
-            'gas': tx.gasPrice,
-            'input': tx.input,
-        };
-        // 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D
-        if (tx.to == '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D') {
-            const result = decoder.decodeData(_thisTx.input);
+    if (tx != null) {
+        try {
+            let _thisTx = parseTx(tx);
+            // filter call to uniswap contract
+            if (tx.to == UNISWAP) {
+                const decodedInput = decoder.decodeData(_thisTx.input);
+                // if (decodedInput.method == "swapExactTokensForTokens" ||decodedInput.method == 'swapTokensForExactTokens') {
+                _thisTx.decoded = decodedInput.inputs[2];
 
-            // if (result.method == "swapExactTokensForTokens" ||result.method == 'swapTokensForExactTokens') {
+                // if call to this address already exists
+                if (latestTxs[tx.to]) {
+                    // && tx.input != '0x') {
 
-            _thisTx.decoded = result.inputs[2];
-            // console.log(result.inputs[2]);
+                    if (latestTxs[_thisTx.to][_thisTx.decoded.toString()]) {
+                        console.log(
+                            '******** FRONT RUN DETECTED ********',
+                            '>>>>>>>>>>> Front runner >>>>>>>>>>>',
+                            latestTxs[_thisTx.to][_thisTx.decoded.toString()],
+                            '>>>>>>>>>>>>>> Source >>>>>>>>>>>>>>',
+                            _thisTx,
+                            '******** FRONT RUN DETECTED ********',
+                        );
+                    }
+                } else {
+                    // Create entry for contract
+                    latestTxs[_thisTx.to] = {};
 
-            if (latestTx[tx.to]) {
-                // && tx.input != '0x') {
-                // console.log("Matching destination")
-                //if(latestTx[tx.input][tx.to][tx.decoded]){
-                if (latestTx[_thisTx.to][_thisTx.decoded.toString()]) {
-                    console.log(
-                        'Front runner:',
-                        latestTx[_thisTx.to][_thisTx.decoded],
-                        'matches to:',
-                        _thisTx,
-                    );
+                    // Create and save entry for this tx
+                    latestTxs[_thisTx.to][_thisTx.decoded.toString()] = {};
+                    latestTxs[_thisTx.to][_thisTx.decoded.toString()] = _thisTx;
+
+                    console.log(_thisTx.decoded.toString());
                 }
-                //console.log("Duplicate from:", _thisTx.from, "with gas: ", _thisTx.gas)
-                // console.log(_thisTx)
-                // console.log(latestTx[tx.input],"copied by:", _thisTx)
-            } else {
-                // latestTx[tx.input] = {};
-                // latestTx[tx.input][tx.to] = {}
-                // latestTx[tx.input][tx.to][tx.decoded] = _thisTx;
-
-                //latestTx[tx.input] = {};
-                latestTx[_thisTx.to] = {};
-                latestTx[_thisTx.to][_thisTx.decoded.toString()] = _thisTx;
-                console.log(_thisTx.decoded.toString());
-
-                // console.log(_thisTx)
             }
-
-            // }
+        } catch (err) {
+            console.log(err.toString());
         }
-    } catch {}
+    }
 }
 
-function viewTxs(latest) {
-    console.log(latest);
-}
 setInterval(() => {
     getTxs();
 }, 500);
