@@ -52,11 +52,17 @@ async function getTxData(tx) {
             _thisTx.decoded = result.inputs[2];
             // console.log(result.inputs[2]);
 
-            if (latestTx[tx.to] && tx.input != '0x') {
-                console.log('Matching input');
+            if (latestTx[tx.to]) {
+                // && tx.input != '0x') {
+                // console.log("Matching destination")
                 //if(latestTx[tx.input][tx.to][tx.decoded]){
-                if (latestTx[tx.to][tx.decoded]) {
-                    console.log(latestTx[tx.input], 'copied by:', _thisTx);
+                if (latestTx[_thisTx.to][_thisTx.decoded.toString()]) {
+                    console.log(
+                        'Front runner:',
+                        latestTx[_thisTx.to][_thisTx.decoded],
+                        'matches to:',
+                        _thisTx,
+                    );
                 }
                 //console.log("Duplicate from:", _thisTx.from, "with gas: ", _thisTx.gas)
                 // console.log(_thisTx)
@@ -67,8 +73,9 @@ async function getTxData(tx) {
                 // latestTx[tx.input][tx.to][tx.decoded] = _thisTx;
 
                 //latestTx[tx.input] = {};
-                latestTx[tx.to] = {};
-                latestTx[tx.to][tx.decoded] = _thisTx;
+                latestTx[_thisTx.to] = {};
+                latestTx[_thisTx.to][_thisTx.decoded.toString()] = _thisTx;
+                console.log(_thisTx.decoded.toString());
 
                 // console.log(_thisTx)
             }
