@@ -29,5 +29,4 @@ UUID="797cf3d3-8799-4c0d-8d96-c25d334a2831" /mnt/ssd ext4 auto,nofail,noatime 0 
     54  sudo chown -R pi:pi /mnt/ssd/
    55  sudo chmod -R 0777 /mnt/ssd
    69  tmux
-   67  geth --syncmode fast --cache 1024 --datadir /mnt/ssd/
-   68  sudo geth --syncmode light --cache 128 --datadir /mnt/ssd/
+   68  sudo geth --syncmode fast --cache 1024 --datadir /mnt/ssd/
