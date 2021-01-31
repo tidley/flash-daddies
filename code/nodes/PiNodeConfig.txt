@@ -16,6 +16,7 @@
    56  sudo nano /etc/fstab 
 
 UUID="797cf3d3-8799-4c0d-8d96-c25d334a2831" /mnt/ssd ext4 auto,nofail,noatime 0 0
+1bc2f18e-c823-4d10-9cec-fc313cdee4f9
 
    58  sudo mount /dev/sda /mnt/ssd
    59  tar -xvf geth-linux-arm7-1.9.25-e7872729.tar.gz

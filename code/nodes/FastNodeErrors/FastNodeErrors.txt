@@ -11,3 +11,29 @@ WARN [01-26|00:12:27.010] Truncating freezer table                 database=/mnt
 WARN [01-26|00:12:27.011] Truncating freezer table                 database=/mnt/ssd/geth/chaindata/ancient table=bodies   items=3259057 limit=3257009                                                   
 CRIT [01-26|00:12:27.022] Truncate ancient store failed            err="truncate /mnt/ssd/geth/chaindata/ancient/bodies.0001.cdat: read-only file system" 
 
+Should add swap?
+https://pimylifeup.com/raspberry-pi-swap-file/
+
+Suggestions for keeping running: https://github.com/ethereum/go-ethereum/issues/15157
+
+                Or even better, use systemd to keep it running while logging everything.
+
+                Adjust the following with your username and paths and save it as /etc/systemd/system/geth.service:
+
+                [Unit]
+
+                [Service]
+                User=user
+                WorkingDirectory=/home/user/
+                Environment=
+                ExecStart=/home/user/geth/geth --rpc
+                Restart=always
+
+                [Install]
+                WantedBy=default.target
+                And run:
+
+                systemctl daemon-reload
+                systemctl enable geth
+                systemctl restart geth
+

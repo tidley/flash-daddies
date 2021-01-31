@@ -2,9 +2,9 @@
 
 # ToDo
 
--   [x] Run node
--   [ ] Sync node
--   [ ] Process tx's
+- [x] Run node
+- [ ] Sync node
+- [ ] Process tx's
 
 # PHASE 1 - Get latest block and tx's
 
@@ -22,10 +22,32 @@ Documentation: https://sebs.github.io/etherscan-api/
 
 Process transactions to get:
 
--   'from' and 'to' addresses --> to match transactions with the same routing.
--   gas price --> to sort matching calls and determine if this a front-run
--   input data / output script --> detect identical calls.
--   time --> find earliest
+- 'from' and 'to' addresses --> to match transactions with the same routing.
+- gas price --> to sort matching calls and determine if this a front-run
+- input data / output script --> detect identical calls.
+- time --> find earliest
+
+## Exchanges
+
+- info: https://money-legos.studydefi.com/#/quickstart
+
+1inch
+
+AAVE
+
+Binance
+Multi-Chain (Lend)
+
+bZx
+
+Compound
+address constant CompoundComptrollerAddress =
+0x3d9819210A31b4961b30EF54bE2aeD79B9c9Cd3B;
+address constant CEtherAddress = 0x4Ddc2D193948926D02f9B1fE9e1daa0718270ED5;
+
+UniSwap
+
+dydx
 
 # PHASE 2 - Analyse mempool for un-mined transactions
 

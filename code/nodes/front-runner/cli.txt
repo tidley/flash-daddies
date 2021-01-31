@@ -1,0 +1,11 @@
+https://geth.ethereum.org/docs/rpc/ns-txpool
+
+$ txpool.content
+
+If '0' then still synching:
+$ eth.blockNumber
+
+
+Empty tx pool (not finished syncing): https://ethereum.stackexchange.com/questions/44027/dont-know-why-my-mainnet-txpool-is-empty
+
+geth console --syncmode fast --mine --miner.threads 1 --miner.etherbase 0xA287F2827342B88AE6f9016fC44e0dD6a246C0b5 --cache 128 --datadir /mnt/ssd/
