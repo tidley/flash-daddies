@@ -1,6 +1,8 @@
 require('dotenv').config();
 const axios = require('axios');
 
+const BigNumber = require('bignumber.js');
+
 const storage = require('node-persist');
 
 const Web3 = require('web3');
@@ -31,8 +33,11 @@ async function main() {
   //   'pendingTransactions',
   //   function (error, result) {
   //     if (!error) console.log(result);
+
+  // https://bloxy.info/functions/38ed1739
   let txHash =
-    '0xc7f675b7b43d029cda1209c0255edd33e417aa681e389d4778bfad6b59f018a4';
+    // '0xc7f675b7b43d029cda1209c0255edd33e417aa681e389d4778bfad6b59f018a4';
+    '0x0dc24b4e6c52de1538f0675d4bfa0e276eca195a623811542998ed6cff2f91d7';
 
   let transaction = await web3.eth.getTransaction(txHash);
 
@@ -83,42 +88,13 @@ async function getAbiRemote(to) {
 async function sendTx(to, abi, method, inputs) {
   const contract = await new web3Local.eth.Contract(abi, to);
 
-  let input_1 = inputs[0];
-  let input_2 = inputs[1];
-  let input_3 = [
-    web3.utils
-      .toBN(
-        // 32323630666163356535353432613737336161343466626366656466376331393362633263353939,
-        String(inputs[2][0]),
-      )
-      .pow(100),
-    web3.utils
-      .toBN(
-        //        63303261616133396232323366653864306130653563346632376561643930383363373536636332,
-        String(inputs[2][1]),
-      )
-      .pow(100),
-  ];
-  // input_3.push(inputs[2][0]);
-  // input_3.push(inputs[2][1]);
-  // input_3 = web3.utils.toBN(input_3).pow(100);
-  let input_4 = inputs[3];
-  let input_5 = inputs[4].words;
   console.log('contract is fine');
-
   let response = await contract.methods[method](
-    input_1,
-    input_2,
-    input_3,
-    input_4,
-    input_5,
-
-    // String(inputs[0]),
-    // String(inputs[1]),
-    // // bn(String(10000000)).times(String(wei));
-    // [inputs[2][0], inputs[2][1]],
-    // String(inputs[3].toString()),
-    // String(inputs[4].toString()),
+    inputs[0].toString(),
+    inputs[1].toString(),
+    [`0x` + inputs[2][0].toString(), `0x` + inputs[2][1].toString()],
+    `0x` + inputs[3],
+    inputs[4].toString(),
   ).send({ from: UNLOCK });
 
   console.log(response);
