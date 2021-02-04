@@ -36,8 +36,8 @@ async function main() {
 
   // https://bloxy.info/functions/38ed1739
   let txHash =
-    // '0xc7f675b7b43d029cda1209c0255edd33e417aa681e389d4778bfad6b59f018a4';
-    '0x0dc24b4e6c52de1538f0675d4bfa0e276eca195a623811542998ed6cff2f91d7';
+    '0xc7f675b7b43d029cda1209c0255edd33e417aa681e389d4778bfad6b59f018a4';
+  // '0x02912a317311711812da4dc6689e7f1f69aa56c0efed9b3ccc0ae5acc649927a';
 
   let transaction = await web3.eth.getTransaction(txHash);
 
@@ -88,16 +88,55 @@ async function getAbiRemote(to) {
 async function sendTx(to, abi, method, inputs) {
   const contract = await new web3Local.eth.Contract(abi, to);
 
+  var copy = [].slice.call(arguments);
+
+  // Arguments
+  // https://stackoverflow.com/questions/3914557/passing-arguments-forward-to-another-javascript-function
+  let _args = [];
+
+  _args[0] = inputs[0].toString();
+  _args[1] = inputs[1].toString();
+  _args[2] = [`0x` + inputs[2][0].toString(), `0x` + inputs[2][1].toString()];
+  _args[3] = `0x` + inputs[3];
+  _args[4] = inputs[4].toString();
+
   console.log('contract is fine');
+
   let response = await contract.methods[method](
+    _args,
+    // inputs[0].toString(),
+    // inputs[1].toString(),
+    // [`0x` + inputs[2][0].toString(), `0x` + inputs[2][1].toString()],
+    // `0x` + inputs[3],
+    // inputs[4].toString(),
+  ).send({ from: UNLOCK });
+
+  console.log(response);
+}
+
+function argMaker() {
+  return (
     inputs[0].toString(),
     inputs[1].toString(),
     [`0x` + inputs[2][0].toString(), `0x` + inputs[2][1].toString()],
     `0x` + inputs[3],
-    inputs[4].toString(),
-  ).send({ from: UNLOCK });
+    inputs[4].toString()
+  );
+}
 
-  console.log(response);
+async function procInputs(inputs) {
+  let inputObj;
+  // Creates tx input object
+  for (const input of inputs) {
+    // inputObj += (if (inputs[0]) inputs[0].toString())
+    if (typeof input == string) {
+    }
+  }
+}
+
+async function getWalletBalance() {
+  // Eth
+  // Dai
 }
 
 main();
