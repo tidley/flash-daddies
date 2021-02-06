@@ -1,0 +1,1 @@
+{"key":"0x079FBAE4d2Cc43DC0dD5A9317f6B50FF9DeC54F3","value":[{"inputs":[{"internalType":"address","name":"_masterCopy","type":"address"}],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"payable":true,"stateMutability":"payable","type":"fallback"}]}
