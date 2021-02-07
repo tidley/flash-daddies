@@ -1,0 +1,33 @@
+   43  wget https://golang.org/dl/go1.15.7.linux-armv6l.tar.gz
+   44  sudo tar -C /usr/local -xzf go1.15.7.linux-armv6l.tar.gz 
+   45  export PATH=$PATH:/usr/local/go/bin
+   46  go version
+
+   47  uname -a
+
+   48  wget https://gethstore.blob.core.windows.net/builds/geth-linux-arm7-1.9.25-e7872729.tar.gz
+
+   50  sudo apt-get install tmux
+
+   51  sudo fdisk -l
+   52  sudo mkfs.ext4 /dev/sda
+   53  sudo mkdir /mnt/ssd
+  
+   56  sudo nano /etc/fstab 
+
+UUID="797cf3d3-8799-4c0d-8d96-c25d334a2831" /mnt/ssd ext4 auto,nofail,noatime 0 0
+1bc2f18e-c823-4d10-9cec-fc313cdee4f9
+
+   58  sudo mount /dev/sda /mnt/ssd
+   59  tar -xvf geth-linux-arm7-1.9.25-e7872729.tar.gz
+   60  cd geth-linux-arm7-1.9.25-e7872729/
+   61  sudo mv geth /usr/local/bin/
+   62  cd 
+   63  ls
+   64  cd geth-linux-arm7-1.9.25-e7872729/
+   65  ls
+   66  cd
+    54  sudo chown -R pi:pi /mnt/ssd/
+   55  sudo chmod -R 0777 /mnt/ssd
+   69  tmux
+   68  sudo geth --syncmode fast --cache 1024 --datadir /mnt/ssd/

@@ -1,0 +1,1 @@
+{"key":"0xaa9f3868C1f56145b2F3902f8E3b2288eF655604","value":[{"inputs":[{"internalType":"bytes","name":"initializationCalldata","type":"bytes"}],"payable":true,"stateMutability":"payable","type":"constructor"},{"payable":true,"stateMutability":"payable","type":"fallback"}]}

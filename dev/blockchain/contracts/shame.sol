@@ -1,13 +1,10 @@
-// SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.7.0;
+pragma solidity ^0.6.0;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/utils/Pausable.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/Address.sol";
+import "./ChildFlat.sol";
 
-contract Shame is ERC721("Shame", "SHM"), Ownable {
-    // using Address for address;
+contract Shame is
+    ChildERC721("Shame", "SMH", 0xb5505a6d998549090530911180f38aC5130101c6)
+{
     uint256 nextTokenID;
 
     function mint(address frontRunner) external {
@@ -16,13 +13,12 @@ contract Shame is ERC721("Shame", "SHM"), Ownable {
         _safeMint(frontRunner, nextTokenID);
     }
 
-    function approve(address to, uint256 tokenId) public pure override {
+    function approve(address to, uint256 tokenId) public override {
         revert("No approvals");
     }
 
     function setApprovalForAll(address operator, bool approved)
         public
-        pure
         override
     {
         revert("No approvals");
@@ -32,7 +28,7 @@ contract Shame is ERC721("Shame", "SHM"), Ownable {
         address from,
         address to,
         uint256 tokenId
-    ) public pure override {
+    ) public override {
         revert("Transfers are not allowed");
     }
 
@@ -40,7 +36,7 @@ contract Shame is ERC721("Shame", "SHM"), Ownable {
         address from,
         address to,
         uint256 tokenId
-    ) public pure override {
+    ) public override {
         revert("Transfers are not allowed");
     }
 
@@ -49,7 +45,7 @@ contract Shame is ERC721("Shame", "SHM"), Ownable {
         address to,
         uint256 tokenId,
         bytes memory _data
-    ) public pure override {
+    ) public override {
         revert("Transfers are not allowed");
     }
 }

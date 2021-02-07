@@ -1,0 +1,17 @@
+New block: 11726902
+/home/pi/flash-daddies/code/node_modules/web3-core-helpers/lib/errors.js:28         
+        var err = new Error('Returned error: ' + message);
+                  ^
+Error: Returned error: no suitable peers available
+    at Object.ErrorResponse (/home/pi/flash-daddies/code/node_modules/web3-core-helpers/lib/errors.js:28:19)
+    at Object.<anonymous> (/home/pi/flash-daddies/code/node_modules/web3-core-requestmanager/lib/index.js:303:36)
+    at callback (/home/pi/flash-daddies/code/node_modules/web3-providers-ipc/lib/index.js:57:40)
+    at Array.forEach (<anonymous>)
+    at Socket.<anonymous> (/home/pi/flash-daddies/code/node_modules/web3-providers-ipc/lib/index.js:68:51)
+    at Socket.emit (node:events:379:20)
+    at addChunk (node:internal/streams/readable:313:12)
+    at readableAddChunk (node:internal/streams/readable:288:9)                      
+    at Socket.Readable.push (node:internal/streams/readable:227:10)                 
+    at Pipe.onStreamRead (node:internal/stream_base_commons:190:23) {               
+  data: null
+}
