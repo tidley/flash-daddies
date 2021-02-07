@@ -1,10 +1,12 @@
 # flash-daddies
 
+Main project in ./code/nodes/infura_endpoint
+
 # ToDo
 
 - [x] Run node
-- [ ] Sync node
-- [ ] Process tx's
+- [x] Sync node
+- [x] Process tx's
 
 # PHASE 1 - Get latest block and tx's
 
