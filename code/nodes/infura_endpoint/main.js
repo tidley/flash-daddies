@@ -8,7 +8,8 @@ const Web3 = require('web3');
 const web3 = new Web3(Web3.givenProvider || process.env.INFURA);
 const web3Local = new Web3('http://127.0.0.1:7545');
 
-const UNLOCK = '0x3f5CE5FBFe3E9af3971dD833D26bA9b5C936f0bE';
+// const UNLOCK = '0x3f5CE5FBFe3E9af3971dD833D26bA9b5C936f0bE'; // ETH and DAI
+const UNLOCK = '0x57757E3D981446D585Af0D9Ae4d7DF6D64647806';
 
 const DAI_ADDRESS = '0x6B175474E89094C44Da98b954EedeAC495271d0F';
 const DAI_ABI =
@@ -79,32 +80,8 @@ async function main() {
   // contract = new web3.eth.Contract(JSON.parse(BUSD_ABI), BUSD_ADDRESS);
   // token = await getTokenBalance(new Token(contract, 'BUSD'));
   // tokenHolder.push(token);
-
   balInit = false;
   getPendingTxs();
-  // try {
-  //   const subscription = web3.eth
-  //     .subscribe('pendingTransactions', async (error, txHash) => {
-  //       if (error) {
-  //         console.log('Infura rate limit');
-  //       }
-  //       // await txProcessor(txHash);
-  //     })
-  //     .on('data', async (txHash) => {
-  //       let pendingTxBlock = saveTxHash(txHash);
-  //       if (pendingTxBlock) {
-  //         subscription.unsubscribe((error, success)=>{
-  //           if(success){
-  //             console.log('Processing transactions...')
-  //           }
-  //         })
-  //       }
-  //       await txProcessor(txHash);
-  //       console.log(txHash);
-  //     });
-  // } catch {
-  //   console.log('Infura rate limit');
-  // }
 }
 
 function getPendingTxs() {
@@ -114,7 +91,6 @@ function getPendingTxs() {
         if (error) {
           console.log('Infura rate limit');
         }
-        // await txProcessor(txHash);
       })
       .on('data', async (txHash) => {
         let pendingTxBlock = saveTxHash(txHash);
@@ -126,8 +102,6 @@ function getPendingTxs() {
           });
           callTxProcessor();
         }
-        // await txProcessor(txHash);
-        // console.log(txHash);
       });
   } catch {
     console.log('Infura rate limit');
@@ -230,23 +204,28 @@ async function sendTx(to, abi, method, inputs, txHash) {
     console.log(error.toString());
   }
 
-  // console.clear();
-  console.log('Replaying :', txHash);
+  console.clear();
+  console.log('Replaying:', txHash);
   console.log('Contract method call:', method);
   tokenHolder[0] = await getEthBalance(tokenHolder[0]);
   const tokenPromises = tokenHolder.map(async (token) => {
     if (token.label != 'ETH') {
-      token = await getTokenBalance(token);
+      token = getTokenBalance(token);
     }
   });
 
   const tokens = await Promise.all(tokenPromises);
+  printInfo();
   // console.log(tokens);
 }
 
-function printInfo(method) {
-  console.clear();
-  console.log('Contract method call:', method);
+function printInfo() {
+  // console.clear();
+  // console.log('Contract method call:', method);
+  for (const token of tokenHolder) {
+    console.log(`${token.label} balance:`, token.currentBal);
+    console.log(`${token.label} profit:`, token.profit);
+  }
 }
 
 async function getEthBalance(tokenInfo) {
@@ -260,8 +239,8 @@ async function getEthBalance(tokenInfo) {
     if (_profit > 0) {
       tokenInfo.profit += tokenInfo.currentBal - tokenInfo.startBal;
     }
-    console.log(`${tokenInfo.label} balance:`, tokenInfo.currentBal);
-    console.log(`${tokenInfo.label} profit:`, tokenInfo.profit);
+    // console.log(`${tokenInfo.label} balance:`, tokenInfo.currentBal);
+    // console.log(`${tokenInfo.label} profit:`, tokenInfo.profit);
     return tokenInfo;
   } catch (error) {
     console.log(error);
@@ -279,8 +258,8 @@ async function getTokenBalance(tokenInfo) {
     if (_profit > 0) {
       tokenInfo.profit += _profit;
     }
-    console.log(`${tokenInfo.label} balance:`, tokenInfo.currentBal);
-    console.log(`${tokenInfo.label} profit:`, tokenInfo.profit);
+    // console.log(`${tokenInfo.label} balance:`, tokenInfo.currentBal);
+    // console.log(`${tokenInfo.label} profit:`, tokenInfo.profit);
     return tokenInfo;
   } catch (error) {
     console.log(error);
